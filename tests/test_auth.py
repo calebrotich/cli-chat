@@ -87,35 +87,32 @@ sample_users_details = [
         
 sample_login = [
                 {
+                "email":"test1@mail.com",	
+                "password":"pass"
+                },
+                {
                 "email":"",	
                 "password":"pass"
                 },
                 {
-                "email":"test1@mail.com",	
+                "email":"test1mail.com",	
                 "password":""
                 },
                 {
-                "email":"test1mail.com",	
+                "email":"test1mailcom",	
                 "password":"pass"
                 },
                 {
-                "email":"test1@mailcom",	
-                "password":"pass"
-                },
-                {
-                "email":"teste1@mail.com",	
+                "email":"teste1@mailcom",	
                 "password":"pass"
                 },
                 {
                 "email":"test1@mail.com",	
                 "password":"pass1"
-                },
-                {
-                "email":"test1@mail.com",	
-                "password":"pass"
                 }
             ]
 
+register_url = 
 
 class Test_Authentication(CLI_Chat_Base):
     def test_registration_successfully(self):
@@ -148,7 +145,7 @@ class Test_Authentication(CLI_Chat_Base):
         #self.assertEqual("created", response_data1["message"])
         self.assertEqual(response.status_code, 403)
     
-    def test_registration_passwords_don't_match(self):
+    def test_registration_passwords_dont_match(self):
         response = self.client.post(register_url, data=json.dumps(sample_user[5]), content_type='application/json')
         response_data1 = json.loads(response.data)
         #self.assertEqual("created", response_data1["message"])
@@ -165,4 +162,40 @@ class Test_Authentication(CLI_Chat_Base):
         response_data1 = json.loads(response.data)
         #self.assertEqual("created", response_data1["message"])
         self.assertEqual(response.status_code, 403)
+    #  #  #
+    def test_login_successfully(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[0]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 201)
+        
+    def test_login_email_empty(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[1]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 403)
+    
+    def test_login_password_empty(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[2]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 403)
+
+    def test_login_wrong_email_format(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[3]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 403)
+    
+    def test_login_wrong_email_format2(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[4]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 403)
+       
+    def test_login_wrong_credentials(self):
+        response = self.client.post(register_url, data=json.dumps(sample_login[5]), content_type='application/json')
+        response_data1 = json.loads(response.data)
+        #self.assertEqual("created", response_data1["message"])
+        self.assertEqual(response.status_code, 401)
        
