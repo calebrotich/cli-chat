@@ -1,0 +1,46 @@
+import click
+import requests
+
+__author__ = "Oyetoke Toby"
+passwords = input("Enter comma-separated passwords: ")
+
+@click.group()
+def main():
+    """
+    Simple CLI for querying books on Google Books by Oyetoke Toby
+    """
+
+
+@main.command()
+@click.argument('query')
+def search(query):
+    """This search and return results corresponding to the given query from Google Books"""
+    url_format = 'https://www.googleapis.com/books/v1/volumes'
+    query = "+".join(query.split())
+
+    query_params = {
+        'q': query
+    }
+
+    response = requests.get(url_format, params=query_params)
+
+    click.echo(response.json()['items']) 
+
+@main.command()
+# @click.argument('id')
+# @click.argument('email')
+
+
+def get(id, email):
+    """This return a particular book from the given id on Google Books"""
+    # url_format = 'http://127.0.0.1:5000/api/v2/products/{}'
+    click.echo(id)
+    click.echo(email)
+    click.echo(passwords)
+    # response = requests.get(url_format.format(id))
+
+    # click.echo(response.json())
+
+
+if __name__ == "__main__":
+    main()
